@@ -1,0 +1,30 @@
+{
+  "name": "vidi",
+  "version": "1.0.0",
+  "description": "a webmidi controller for browser based visuals",
+  "main": "index.js",
+  "scripts": {
+    "test": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rachelnicole/vidi.git"
+  },
+  "keywords": [
+    "visuals",
+    "creativecoding",
+    "nodejs"
+  ],
+  "author": "Rachel White",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rachelnicole/vidi/issues"
+  },
+  "homepage": "https://github.com/rachelnicole/vidi#readme",
+  "dependencies": {
+    "express": "^4.16.3",
+    "https": "^1.0.0",
+    "jzz": "^0.5.5",
+    "web-midi-api": "^2.0.1"
+  }
+}
