@@ -1,6 +1,26 @@
 // m = MIDIAccess object for you to make calls on
 var m = null;
 
+var buttonMap = {
+  "36" : "/viz/36.js",
+  "37" : "37 was pushed",
+  "38" : "38 was pushed",
+  "39" : "39 was pushed",
+  "40" : "40 was pushed",
+  "41" : "41 was pushed",
+  "42" : "42 was pushed",
+  "43" : "43 was pushed",
+  "44" : "44 was pushed",
+  "45" : "45 was pushed",
+  "46" : "46 was pushed",
+  "47" : "47 was pushed",
+  "48" : "48 was pushed",
+  "49" : "49 was pushed",
+  "50" : "50 was pushed",
+  "51" : "51 was pushed",
+  "52" : "51 was pushed"
+}
+
 navigator.requestMIDIAccess().then(onSuccessCallback, onErrorCallback);
 
 function onSuccessCallback(access) {
@@ -41,7 +61,17 @@ function onSuccessCallback(access) {
 function myMIDIMessagehandler(iteratorInputs) {
   switch (iteratorInputs.data[0]) {
     case 146: // button press
-      console.log('button press. note #' + iteratorInputs.data[1]);
+      // refactor this, dont really want to put an if statement in a switch?
+      let buttonPress = iteratorInputs.data[1];
+
+      if (buttonMap.hasOwnProperty(buttonPress)) {
+        console.log(buttonMap[buttonPress]);
+        var scriptTag = document.createElement('script');
+          scriptTag.setAttribute('src',buttonMap[buttonPress]);
+
+          document.body.appendChild(scriptTag)
+      }
+
       break;
     case 130: // button release
       console.log('button release. note #' + iteratorInputs.data[1]);
