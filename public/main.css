@@ -3,6 +3,34 @@ body {
     background-color: #fff;
     font-family: monospace;
     font-size: 14px;
-    line-height: 18px;
-    padding: 10px;
+    margin: 0px;
+}
+.container {
+    z-index: -1;
+    position: fixed;
+    height: 100vh;
+    width: 100vw;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+}
+
+canvas {
+    margin-left: auto;
+    margin-right: auto;
+    -webkit-transform: scale( 4 );
+    transform: scale( 4 );
+    image-rendering: optimizeSpeed;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: -o-crisp-edges;
+    -ms-interpolation-mode: nearest-neighbor;
+    image-rendering: pixelated;
 }

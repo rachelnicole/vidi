@@ -2,10 +2,10 @@
 var m = null;
 
 var buttonMap = {
-  "36" : "/viz/36.js",
-  "37" : "37 was pushed",
-  "38" : "38 was pushed",
-  "39" : "39 was pushed",
+  "36" : "viz/36.js",
+  "37" : "viz/37.js",
+  "38" : "viz/38.js",
+  "39" : "viz/39.js",
   "40" : "40 was pushed",
   "41" : "41 was pushed",
   "42" : "42 was pushed",
@@ -59,17 +59,21 @@ function onSuccessCallback(access) {
 // this function handles which buttons are being pressed on the midifighter
 
 function myMIDIMessagehandler(iteratorInputs) {
+  let vizState;
   switch (iteratorInputs.data[0]) {
     case 146: // button press
       // refactor this, dont really want to put an if statement in a switch?
       let buttonPress = iteratorInputs.data[1];
 
       if (buttonMap.hasOwnProperty(buttonPress)) {
+        vizState = buttonMap[buttonPress];
         console.log(buttonMap[buttonPress]);
         var scriptTag = document.createElement('script');
           scriptTag.setAttribute('src',buttonMap[buttonPress]);
 
-          document.body.appendChild(scriptTag)
+          document.body.appendChild(scriptTag);
+
+          
       }
 
       break;
