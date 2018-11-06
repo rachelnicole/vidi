@@ -148,31 +148,12 @@ var Synth = function(){
     synth.waves[2].threshold = r(150) / 100
   }
 
-  this.saveLinkToClipboard = function(){
-
-    var url = '/?'
-    url += 'pulsewidth1='+synth.waves[0].pulsewidth
-    url += '&wavelength1A='+synth.waves[0].wavelength1
-    url += '&wavelength1B='+synth.waves[0].wavelength2
-    url += '&threshold1='+synth.waves[0].threshold
-    url += '&pulsewidth2='+synth.waves[1].pulsewidth
-    url += '&wavelength2A='+synth.waves[1].wavelength1
-    url += '&wavelength2B='+synth.waves[1].wavelength2
-    url += '&threshold2='+synth.waves[1].threshold
-    url += '&pulsewidth3='+synth.waves[2].pulsewidth
-    url += '&wavelength3A='+synth.waves[2].wavelength1
-    url += '&wavelength3B='+synth.waves[2].wavelength2
-    url += '&threshold3='+synth.waves[2].threshold
-    url += '&bgRed='+synth.background[0]
-    url += '&bgGreen='+synth.background[1]
-    url += '&bgBlue='+synth.background[2]
-    url += '&fgRed='+synth.foreground[0]
-    url += '&fgGreen='+synth.foreground[1]
-    url += '&fgBlue='+synth.foreground[2]
-
-    window.history.replaceState({}, 'Jagged Pixel Synth', url)
-    copyTextToClipboard(window.location.host+url)
-
+  this.randomBg = function() {
+    synth.background = [r(255),r(255),r(255)]
+  }
+  
+  this.randomFg = function() {
+    synth.foreground = [r(255),r(255),r(255)]
   }
 }
 
@@ -183,7 +164,7 @@ synth.init()
 // this function handles which buttons are being pressed on the midifighter
 
 function myMIDIMessagehandler(iteratorInputs) {
-  console.log(iteratorInputs)
+  
   switch (iteratorInputs.data[0]) {
     case 147: // side button press
       buttonControls(iteratorInputs.data[1]);
@@ -191,12 +172,12 @@ function myMIDIMessagehandler(iteratorInputs) {
       break;
     case 146: // button press
       // refactor this, dont really want to put an if statement in a switch?
-      console.log('button press');
+      //console.log('button press');
       buttonControls(iteratorInputs.data[1]);
       
       break;
     case 130: // button release
-      console.log('button release. note #' + iteratorInputs.data[1]);
+      //console.log('button release. note #' + iteratorInputs.data[1]);
       break;
     default:
       
@@ -205,16 +186,276 @@ function myMIDIMessagehandler(iteratorInputs) {
 
 function buttonControls(buttonData) {
   switch(buttonData) {
-    case 28: // side top. all randomized
+    case 22: // side top. all randomized
       synth.randomize();
       break;
-    case 27: // side middle. random background
-    
+    case 21: // side middle. random background
+      synth.randomBg();
       break;
-    case 26: // side bottom. random foreground
-    
+    case 20: // side bottom. random foreground
+      synth.randomFg();
       break;
-    case 48: //
+    // FIRST WAVE GROUP
+    case 48: // synth.waves[0] pulsewidth minus
+      if (synth.waves[0].pulsewidth >= 0) {
+        console.log(synth.waves[0].pulsewidth = synth.waves[0].pulsewidth - .05);
+      } else {
+        console.log('hit zero');
+      }
+      console.log(synth.waves[0].pulsewidth);
+      break;
+    case 49: // synth.waves[0] pulsewidth plus
+      if (synth.waves[0].pulsewidth <= 2) {
+        console.log(synth.waves[0].pulsewidth = synth.waves[0].pulsewidth + .05);
+      } else {
+        console.log('hit zero');
+      }
+      console.log(synth.waves[0].pulsewidth);
+      break;
+    case 50: // synth.waves[0] wavelength1 minus
+      if (synth.waves[0].wavelength1 >= 1) {
+        console.log(synth.waves[0].wavelength1 = synth.waves[0].wavelength1 - 5);
+      } else {
+        console.log('hit zero');
+      }
+      console.log(synth.waves[0].wavelength1);
+      break;
+    case 51: // synth.waves[0] wavelength1 plus
+      if (synth.waves[0].wavelength1 < 100) {
+        console.log(synth.waves[0].wavelength1 = synth.waves[0].wavelength1 + 5);
+      } else {
+        console.log('hit zero');
+      }
+      console.log(synth.waves[0].pulsewidth);
+      break;
+    case 44: // synth.waves[0] wavelength2 minus
+      if (synth.waves[0].wavelength2 >= 1) {
+        console.log(synth.waves[0].wavelength2 = synth.waves[0].wavelength2 - 5);
+      } else {
+        console.log('hit zero');
+      }
+      console.log(synth.waves[0].wavelength2);
+      break;
+    case 45: // synth.waves[0] wavelength2 plus
+      if (synth.waves[0].wavelength2 < 100) {
+        console.log(synth.waves[0].wavelength2 = synth.waves[0].wavelength2 + 5);
+      } else {
+        console.log('hit zero');
+      }
+      
+      break;
+    case 46: // synth.waves[0] threshold minus
+      if (synth.waves[0].threshold >= 0) {
+        console.log(synth.waves[0].threshold = synth.waves[0].threshold - .1);
+      } else {
+        console.log('hit zero');
+      }
+      console.log(synth.waves[0].threshold);
+      break;
+    case 47: // synth.waves[0] threshold plus
+      if (synth.waves[0].threshold < 1.5) {
+        console.log(synth.waves[0].threshold = synth.waves[0].threshold + .1);
+      } else {
+        console.log('hit zero');
+      }
+      
+      break;
+    // SECOND WAVE GROUP
+    case 40: // synth.waves[1] pulsewidth minus
+      if (synth.waves[1].pulsewidth >= 0) {
+        console.log(synth.waves[1].pulsewidth = synth.waves[1].pulsewidth - .05);
+      } else {
+        console.log('hit zero');
+      }
+      console.log(synth.waves[1].pulsewidth);
+      break;
+    case 41: // synth.waves[1] pulsewidth plus
+      if (synth.waves[1].pulsewidth <= 2) {
+        console.log(synth.waves[1].pulsewidth = synth.waves[1].pulsewidth + .05);
+      } else {
+        console.log('hit zero');
+      }
+      console.log(synth.waves[1].pulsewidth);
+      break;
+    case 42: // synth.waves[1] wavelength1 minus
+      if (synth.waves[1].wavelength1 >= 1) {
+        console.log(synth.waves[1].wavelength1 = synth.waves[1].wavelength1 - 5);
+      } else {
+        console.log('hit zero');
+      }
+      console.log(synth.waves[1].wavelength1);
+      break;
+    case 43: // synth.waves[1] wavelength1 plus
+      if (synth.waves[1].wavelength1 < 100) {
+        console.log(synth.waves[1].wavelength1 = synth.waves[1].wavelength1 + 5);
+      } else {
+        console.log('hit zero');
+      }
+      console.log(synth.waves[1].pulsewidth);
+      break;
+    case 36: // synth.waves[1] wavelength2 minus
+      if (synth.waves[1].wavelength2 >= 1) {
+        console.log(synth.waves[1].wavelength2 = synth.waves[1].wavelength2 - 5);
+      } else {
+        console.log('hit zero');
+      }
+      console.log(synth.waves[1].wavelength2);
+      break;
+    case 37: // synth.waves[1] wavelength2 plus
+      if (synth.waves[1].wavelength2 < 100) {
+        console.log(synth.waves[1].wavelength2 = synth.waves[1].wavelength2 + 5);
+      } else {
+        console.log('hit zero');
+      }
+      
+      break;
+    case 38: // synth.waves[1] threshold minus
+      if (synth.waves[1].threshold >= 0) {
+        console.log(synth.waves[1].threshold = synth.waves[1].threshold - .1);
+      } else {
+        console.log('hit zero');
+      }
+      console.log(synth.waves[1].threshold);
+      break;
+    case 39: // synth.waves[1] threshold plus
+      if (synth.waves[1].threshold < 1.5) {
+        console.log(synth.waves[1].threshold = synth.waves[1].threshold + .1);
+      } else {
+        console.log('hit zero');
+      }
+      
+      break;
+// SECOND WAVE GROUP
+    case 40: // synth.waves[1] pulsewidth minus
+      if (synth.waves[1].pulsewidth >= 0) {
+        console.log(synth.waves[1].pulsewidth = synth.waves[1].pulsewidth - .05);
+      } else {
+        console.log('hit zero');
+      }
+      console.log(synth.waves[1].pulsewidth);
+      break;
+    case 41: // synth.waves[1] pulsewidth plus
+      if (synth.waves[1].pulsewidth <= 2) {
+        console.log(synth.waves[1].pulsewidth = synth.waves[1].pulsewidth + .05);
+      } else {
+        console.log('hit zero');
+      }
+      console.log(synth.waves[1].pulsewidth);
+      break;
+    case 42: // synth.waves[1] wavelength1 minus
+      if (synth.waves[1].wavelength1 >= 1) {
+        console.log(synth.waves[1].wavelength1 = synth.waves[1].wavelength1 - 5);
+      } else {
+        console.log('hit zero');
+      }
+      console.log(synth.waves[1].wavelength1);
+      break;
+    case 43: // synth.waves[1] wavelength1 plus
+      if (synth.waves[1].wavelength1 < 100) {
+        console.log(synth.waves[1].wavelength1 = synth.waves[1].wavelength1 + 5);
+      } else {
+        console.log('hit zero');
+      }
+      console.log(synth.waves[1].pulsewidth);
+      break;
+    case 36: // synth.waves[1] wavelength2 minus
+      if (synth.waves[1].wavelength2 >= 1) {
+        console.log(synth.waves[1].wavelength2 = synth.waves[1].wavelength2 - 5);
+      } else {
+        console.log('hit zero');
+      }
+      console.log(synth.waves[1].wavelength2);
+      break;
+    case 37: // synth.waves[1] wavelength2 plus
+      if (synth.waves[1].wavelength2 < 100) {
+        console.log(synth.waves[1].wavelength2 = synth.waves[1].wavelength2 + 5);
+      } else {
+        console.log('hit zero');
+      }
+      
+      break;
+    case 38: // synth.waves[1] threshold minus
+      if (synth.waves[1].threshold >= 0) {
+        console.log(synth.waves[1].threshold = synth.waves[1].threshold - .1);
+      } else {
+        console.log('hit zero');
+      }
+      console.log(synth.waves[1].threshold);
+      break;
+    case 39: // synth.waves[1] threshold plus
+      if (synth.waves[1].threshold < 1.5) {
+        console.log(synth.waves[1].threshold = synth.waves[1].threshold + .1);
+      } else {
+        console.log('hit zero');
+      }
+      
+      break;
+
+    // THIRD WAVE GROUP
+    case 64: // synth.waves[2] pulsewidth minus
+      if (synth.waves[2].pulsewidth >= 0) {
+        console.log(synth.waves[2].pulsewidth = synth.waves[2].pulsewidth - .05);
+      } else {
+        console.log('hit zero');
+      }
+      console.log(synth.waves[2].pulsewidth);
+      break;
+    case 65: // synth.waves[2] pulsewidth plus
+      if (synth.waves[2].pulsewidth <= 2) {
+        console.log(synth.waves[2].pulsewidth = synth.waves[2].pulsewidth + .05);
+      } else {
+        console.log('hit zero');
+      }
+      console.log(synth.waves[2].pulsewidth);
+      break;
+    case 66: // synth.waves[2] wavelength1 minus
+      if (synth.waves[2].wavelength1 >= 1) {
+        console.log(synth.waves[2].wavelength1 = synth.waves[2].wavelength1 - 5);
+      } else {
+        console.log('hit zero');
+      }
+      console.log(synth.waves[2].wavelength1);
+      break;
+    case 67: // synth.waves[2] wavelength1 plus
+      if (synth.waves[2].wavelength1 < 100) {
+        console.log(synth.waves[2].wavelength1 = synth.waves[2].wavelength1 + 5);
+      } else {
+        console.log('hit zero');
+      }
+      console.log(synth.waves[2].pulsewidth);
+      break;
+    case 60: // synth.waves[2] wavelength2 minus
+      if (synth.waves[2].wavelength2 >= 1) {
+        console.log(synth.waves[2].wavelength2 = synth.waves[2].wavelength2 - 5);
+      } else {
+        console.log('hit zero');
+      }
+      console.log(synth.waves[2].wavelength2);
+      break;
+    case 61: // synth.waves[2] wavelength2 plus
+      if (synth.waves[2].wavelength2 < 100) {
+        console.log(synth.waves[2].wavelength2 = synth.waves[2].wavelength2 + 5);
+      } else {
+        console.log('hit zero');
+      }
+      
+      break;
+    case 62: // synth.waves[2] threshold minus
+      if (synth.waves[2].threshold >= 0) {
+        console.log(synth.waves[2].threshold = synth.waves[2].threshold - .1);
+      } else {
+        console.log('hit zero');
+      }
+      console.log(synth.waves[2].threshold);
+      break;
+    case 63: // synth.waves[2] threshold plus
+      if (synth.waves[2].threshold < 1.5) {
+        console.log(synth.waves[2].threshold = synth.waves[2].threshold + .1);
+      } else {
+        console.log('hit zero');
+      }
+      
+      break;
   }
 }
 
