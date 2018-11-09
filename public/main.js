@@ -36,7 +36,7 @@ function onSuccessCallback(access) {
 
   // full velocity note on A4 on channel zero
   output.send([0x90, 0x45, 0x7f]);
-};
+}
 
 
 function onErrorCallback(err) {
@@ -59,8 +59,8 @@ function Synth(){
   this.ctx = null;
   this.imageData = null;
 
-  this.background = [0, 100, 255]
-  this.foreground = [0, 255, 100]
+  this.background = [0, 100, 255];
+  this.foreground = [0, 255, 100];
 
   this.waves = [
     {
@@ -95,9 +95,9 @@ function Synth(){
       wavelength2:50,
       threshold:1,
     }  
-  ]
+  ];
 
-  this.resetSize = function(){
+  this.resetSize = function() {
     width  = window.innerWidth/4;
     height = window.innerHeight/4;
     _canvas = document.getElementById('canvas');
@@ -108,22 +108,22 @@ function Synth(){
     this.ctx = _canvas.getContext('2d');
     this.imageData = this.ctx.getImageData(0, 0, width, height);
     return this.imageData;
-  }
+  };
 
   this.init = function(){ 
     
     this.resetSize();
 
     synth.randomize();
-  }
+  };
 
   this.refreshWave = function(index){
     s = this.waves[index];
     s.value = Math.sin( s.counter ) + s.pulsewidth ;
     s.counter += Math.PI * s.wavelength1 / s.wavelength2;
-  }
+  };
 
-  this.randomize = function(){
+  this.randomize = function() {
     synth.background = [r(255),r(255),r(255)];
     synth.foreground = [r(255),r(255),r(255)];
 
@@ -141,15 +141,15 @@ function Synth(){
     synth.waves[2].wavelength1 = r(1000);
     synth.waves[2].wavelength2 = r(10000);
     synth.waves[2].threshold = r(150) / 100;
-  }
+  };
 
   this.randomBg = function() {
     synth.background = [r(255),r(255),r(255)];
-  }
+  };
   
   this.randomFg = function() {
     synth.foreground = [r(255),r(255),r(255)];
-  }
+  };
 }
 
 
@@ -157,12 +157,26 @@ var synth = new Synth();
 synth.init();
 
 // this function handles which buttons are being pressed on the midifighter
+var canvasScale,
+    canvasRotate;
 
 function myMIDIMessagehandler(iteratorInputs) {
   var midiInput = iteratorInputs.data[0];
   if (midiInput == 147 || midiInput == 146) {
     buttonControls(iteratorInputs.data[1]);
   } else {
+    if (iteratorInputs.data[1] == 0) {
+      canvasScale = iteratorInputs.data[2];
+
+    } else {
+      canvasRotate = iteratorInputs.data[2];
+
+    }
+
+    var canvasElement = document.getElementById("canvas");
+      console.log(iteratorInputs.data[2]);
+      canvasElement.style.transform = "scale(" + canvasScale + ")" + "rotate(" + canvasRotate + "deg)";
+    
     // tilt logic later. 
   }
 }
