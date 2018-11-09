@@ -160,30 +160,31 @@ synth.init();
 var canvasScale,
     canvasRotate;
 
+function cleanParameter(input) {
+  if (input <= 63) {
+    return input - 63;
+  } else {
+    return input - 64;
+  }
+}
+
+var MAX_INPUT = 63;
+
 function myMIDIMessagehandler(iteratorInputs) {
   var midiInput = iteratorInputs.data[0],
       thresholdIndicator = iteratorInputs.data[1];
   if (midiInput == 147 || midiInput == 146) {
     buttonControls(iteratorInputs.data[1]);
   } else if (midiInput == 179) {
-    var param = iteratorInputs.data[2];
+    var param = cleanParameter(iteratorInputs.data[2]);
     if (thresholdIndicator == 0) {
-      // Side to side movement - only scale.
-      if (param >= 0 && param < 64) {
-        canvasScale = 100 - (param / 63 * 96 + 4);
-      } else {
-        canvasScale = (param - 64) / 64 * 96 + 4;
-      }
+      // Side to side movement - only scale
+      canvasScale = Math.abs(param) / MAX_INPUT * 96 + 4;
 
     } else if (thresholdIndicator == 1) {
       // Forward and backward movement - scale and rotate.
-      if (param >= 0 && param < 64) {
-        canvasRotate = param / 126 * 180 + 0 - 90;
-        canvasScale = 100 - (param / 63 * 96 + 4);
-      } else {
-        canvasRotate = param / 126 * 180 + 0 - 90;
-        canvasScale = (param - 64) / 64 * 96 + 4;
-      }
+      canvasScale = Math.abs(param) / MAX_INPUT * 96 + 4;
+      canvasRotate = param / 63 * 180 + 0;
     }
     if (canvasScale < 4) {
       canvasScale = 4;
