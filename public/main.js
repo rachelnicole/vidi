@@ -165,26 +165,29 @@ function myMIDIMessagehandler(iteratorInputs) {
       thresholdIndicator = iteratorInputs.data[1];
   if (midiInput == 147 || midiInput == 146) {
     buttonControls(iteratorInputs.data[1]);
-  } else if (midiInput == 179 && thresholdIndicator == 0 || midiInput == 179 && thresholdIndicator == 1 ) {
-    if (iteratorInputs.data[1] == 0) {
-      if (iteratorInputs.data[2] >= 0 && iteratorInputs.data[2] < 64) {
-        canvasScale = 100 - iteratorInputs.data[2] / 64.0 * 96 + 4;
+  } else if (midiInput == 179) {
+    var param = iteratorInputs.data[2];
+    if (thresholdIndicator == 0) {
+      // Side to side movement - only scale.
+      if (param >= 0 && param < 64) {
+        canvasScale = 100 - (param / 63 * 96 + 4);
       } else {
-        canvasScale = (iteratorInputs.data[2] - 64) / 64.0 * 96 + 4;
+        canvasScale = (param - 64) / 64 * 96 + 4;
       }
 
-    } else {
-      if (iteratorInputs.data[2] >= 0 && iteratorInputs.data[2] < 64) {
-        canvasRotate = iteratorInputs.data[2] / 127 * 180 + 0 - 90;
-        canvasScale = 100 - iteratorInputs.data[2] / 64.0 * 96 + 4;
+    } else if (thresholdIndicator == 1) {
+      // Forward and backward movement - scale and rotate.
+      if (param >= 0 && param < 64) {
+        canvasRotate = param / 126 * 180 + 0 - 90;
+        canvasScale = 100 - (param / 63 * 96 + 4);
       } else {
-        canvasRotate = iteratorInputs.data[2] / 127 * 180 + 0 - 90;
-        canvasScale = (iteratorInputs.data[2] - 64) / 64.0 * 96 + 4;
+        canvasRotate = param / 126 * 180 + 0 - 90;
+        canvasScale = (param - 64) / 64 * 96 + 4;
       }
     }
-  if (canvasScale < 4) {
-    canvasScale = 4;
-  }
+    if (canvasScale < 4) {
+      canvasScale = 4;
+    }
 
     var canvasElement = document.getElementById("canvas");
       //console.log(iteratorInputs.data[2]);
