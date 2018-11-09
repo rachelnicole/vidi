@@ -161,20 +161,33 @@ var canvasScale,
     canvasRotate;
 
 function myMIDIMessagehandler(iteratorInputs) {
-  var midiInput = iteratorInputs.data[0];
+  var midiInput = iteratorInputs.data[0],
+      thresholdIndicator = iteratorInputs.data[1];
   if (midiInput == 147 || midiInput == 146) {
     buttonControls(iteratorInputs.data[1]);
-  } else {
+  } else if (midiInput == 179 && thresholdIndicator == 0 || midiInput == 179 && thresholdIndicator == 1 ) {
     if (iteratorInputs.data[1] == 0) {
-      canvasScale = iteratorInputs.data[2];
+      if (iteratorInputs.data[2] >= 0 && iteratorInputs.data[2] < 64) {
+        canvasScale = 100 - iteratorInputs.data[2] / 64.0 * 96 + 4;
+      } else {
+        canvasScale = (iteratorInputs.data[2] - 64) / 64.0 * 96 + 4;
+      }
 
     } else {
-      canvasRotate = iteratorInputs.data[2];
-
+      if (iteratorInputs.data[2] >= 0 && iteratorInputs.data[2] < 64) {
+        canvasRotate = iteratorInputs.data[2] / 127 * 180 + 0 - 90;
+        canvasScale = 100 - iteratorInputs.data[2] / 64.0 * 96 + 4;
+      } else {
+        canvasRotate = iteratorInputs.data[2] / 127 * 180 + 0 - 90;
+        canvasScale = (iteratorInputs.data[2] - 64) / 64.0 * 96 + 4;
+      }
     }
+  if (canvasScale < 4) {
+    canvasScale = 4;
+  }
 
     var canvasElement = document.getElementById("canvas");
-      console.log(iteratorInputs.data[2]);
+      //console.log(iteratorInputs.data[2]);
       canvasElement.style.transform = "scale(" + canvasScale + ")" + "rotate(" + canvasRotate + "deg)";
     
     // tilt logic later. 
