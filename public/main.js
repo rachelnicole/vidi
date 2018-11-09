@@ -20,16 +20,16 @@ function onSuccessCallback(access) {
   var outputs = m.outputs;
 
   // returns an iterator that loops over all inputs
-  var iteratorInputs = inputs.values()
+  var iteratorInputs = inputs.values();
 
   // get the first input
-  var input = iteratorInputs.next().value
+  var input = iteratorInputs.next().value;
 
   // onmidimessage(event), event.data & event.receivedTime are populated
   input.onmidimessage = myMIDIMessagehandler;
 
   // returns an iterator that loops over all outputs
-  var iteratorOutputs = outputs.values()
+  var iteratorOutputs = outputs.values();
 
   // grab first output device
   var output = iteratorOutputs.next().value;
@@ -46,18 +46,18 @@ function onErrorCallback(err) {
 // Start pixelsynth code here. you rule donald. https://pixelsynth.com/ 
 
 // helper functions
-var r = function(max){
-  return Math.floor(Math.random()*max)
+function r(max){
+  return Math.floor(Math.random()*max);
 }
 
 function valBetween(v, min, max) {
-    return (Math.min(max, Math.max(min, v)));
+  return (Math.min(max, Math.max(min, v)));
 }
 
-var Synth = function(){
+function Synth(){
 
-  this.ctx = null
-  this.imageData = null
+  this.ctx = null;
+  this.imageData = null;
 
   this.background = [0, 100, 255]
   this.foreground = [0, 255, 100]
@@ -98,57 +98,57 @@ var Synth = function(){
   ]
 
   this.resetSize = function(){
-    width  = window.innerWidth/4
-    height = window.innerHeight/4
-    _canvas = document.getElementById('canvas')
-    _canvas.style.width  = width+'px'
-    _canvas.setAttribute('width',width)
-    _canvas.style.height = height+'px'
-    _canvas.setAttribute('height',height)
-    this.ctx = _canvas.getContext('2d')
-    this.imageData = this.ctx.getImageData(0, 0, width, height)
-    return this.imageData
+    width  = window.innerWidth/4;
+    height = window.innerHeight/4;
+    _canvas = document.getElementById('canvas');
+    _canvas.style.width  = width+'px';
+    _canvas.setAttribute('width',width);
+    _canvas.style.height = height+'px';
+    _canvas.setAttribute('height',height);
+    this.ctx = _canvas.getContext('2d');
+    this.imageData = this.ctx.getImageData(0, 0, width, height);
+    return this.imageData;
   }
 
   this.init = function(){ 
     
-    this.resetSize()
+    this.resetSize();
 
-    synth.randomize()
+    synth.randomize();
   }
 
   this.refreshWave = function(index){
-    s = this.waves[index]
-    s.value = Math.sin( s.counter ) + s.pulsewidth 
-    s.counter += Math.PI * s.wavelength1 / s.wavelength2
+    s = this.waves[index];
+    s.value = Math.sin( s.counter ) + s.pulsewidth ;
+    s.counter += Math.PI * s.wavelength1 / s.wavelength2;
   }
 
   this.randomize = function(){
-    synth.background = [r(255),r(255),r(255)]
-    synth.foreground = [r(255),r(255),r(255)]
+    synth.background = [r(255),r(255),r(255)];
+    synth.foreground = [r(255),r(255),r(255)];
 
-    synth.waves[0].pulsewidth = r(100)/100
-    synth.waves[0].wavelength1 = r(10)
-    synth.waves[0].wavelength2 = r(100)
-    synth.waves[0].threshold = r(150) / 100
+    synth.waves[0].pulsewidth = r(100)/100;
+    synth.waves[0].wavelength1 = r(10);
+    synth.waves[0].wavelength2 = r(100);
+    synth.waves[0].threshold = r(150) / 100;
 
-    synth.waves[1].pulsewidth = r(100)/100
-    synth.waves[1].wavelength1 = r(100)
-    synth.waves[1].wavelength2 = r(1000)
-    synth.waves[1].threshold = r(150) / 100
+    synth.waves[1].pulsewidth = r(100)/100;
+    synth.waves[1].wavelength1 = r(100);
+    synth.waves[1].wavelength2 = r(1000);
+    synth.waves[1].threshold = r(150) / 100;
 
-    synth.waves[2].pulsewidth = r(100)/100
-    synth.waves[2].wavelength1 = r(1000)
-    synth.waves[2].wavelength2 = r(10000)
-    synth.waves[2].threshold = r(150) / 100
+    synth.waves[2].pulsewidth = r(100)/100;
+    synth.waves[2].wavelength1 = r(1000);
+    synth.waves[2].wavelength2 = r(10000);
+    synth.waves[2].threshold = r(150) / 100;
   }
 
   this.randomBg = function() {
-    synth.background = [r(255),r(255),r(255)]
+    synth.background = [r(255),r(255),r(255)];
   }
   
   this.randomFg = function() {
-    synth.foreground = [r(255),r(255),r(255)]
+    synth.foreground = [r(255),r(255),r(255)];
   }
 }
 
@@ -257,36 +257,37 @@ function buttonControls(buttonData) {
 // on window resize also resize synth
 var resizeTimer;
 window.onresize = function(){
-  clearTimeout(resizeTimer)
+  clearTimeout(resizeTimer);
   resizeTimer = setTimeout(function(){
-    synth.imageData = synth.resetSize()
-  }, 100)
-}
+    synth.imageData = synth.resetSize();
+  }, 100);
+};
 
 
 
 
-var fps = 10
+var fps = 10;
+
 function draw() {
 
-  setTimeout( draw, 1000/fps )
+  setTimeout( draw, 1000/fps );
 
-  pixels = synth.imageData.data
+  pixels = synth.imageData.data;
 
   // set every pixel
   // each pixel is four subsequent indexes (rgba)
 
   for (var i = 0; i < pixels.length; i += 4) {
 
-    synth.refreshWave(0)
-    synth.refreshWave(1)
-    synth.refreshWave(2)
+    synth.refreshWave(0);
+    synth.refreshWave(1);
+    synth.refreshWave(2);
 
     // default to bg color
-    pixels[i]     = synth.background[0]
-    pixels[i + 1] = synth.background[1]
-    pixels[i + 2] = synth.background[2]
-    pixels[i + 3] = 255
+    pixels[i]     = synth.background[0];
+    pixels[i + 1] = synth.background[1];
+    pixels[i + 2] = synth.background[2];
+    pixels[i + 3] = 255;
     
     // do fg color if threshold is met
     if( 
@@ -295,15 +296,15 @@ function draw() {
         synth.waves[2].value > synth.waves[2].threshold
       ){
   
-      pixels[i]     = valBetween( synth.foreground[0] + synth.waves[0].value * 100, 0, 255)
-      pixels[i + 1] = valBetween( synth.foreground[1] + synth.waves[1].value * 100, 0, 255)
-      pixels[i + 2] = valBetween( synth.foreground[2] + synth.waves[2].value * 100, 0, 255)
-      pixels[i + 3] = 255
+      pixels[i]     = valBetween( synth.foreground[0] + synth.waves[0].value * 100, 0, 255);
+      pixels[i + 1] = valBetween( synth.foreground[1] + synth.waves[1].value * 100, 0, 255);
+      pixels[i + 2] = valBetween( synth.foreground[2] + synth.waves[2].value * 100, 0, 255);
+      pixels[i + 3] = 255;
     }
 
   }
 
-  synth.ctx.putImageData(synth.imageData,0,0)
+  synth.ctx.putImageData(synth.imageData,0,0);
 }
 
 draw();
