@@ -1,3 +1,5 @@
+/*jshint esversion: 6 */ 
+
 // m = MIDIAccess object for you to make calls on
 var m = null;
 
@@ -11,7 +13,7 @@ function onSuccessCallback(access) {
 
   // Things you can do with the MIDIAccess object:
 
-  // inputs = MIDIInputMaps, you can retrieve the inputs with iterators
+  // inputs = MIDIInputMaps, you q can retrieve the inputs with iterators
   var inputs = m.inputs;
 
   // outputs = MIDIOutputMaps, you can retrieve the outputs with iterators
@@ -41,13 +43,6 @@ function onErrorCallback(err) {
   console.log('uh-oh! Something went wrong! Error code: ' + err.code);
 }
 
-var r = function(max){
-  return Math.floor(Math.random()*max)
-}
-
-function valBetween(v, min, max) {
-    return (Math.min(max, Math.max(min, v)));
-}
 // Start pixelsynth code here. you rule donald. https://pixelsynth.com/ 
 
 // helper functions
@@ -158,29 +153,17 @@ var Synth = function(){
 }
 
 
-var synth = new Synth()
-synth.init()
+var synth = new Synth();
+synth.init();
 
 // this function handles which buttons are being pressed on the midifighter
 
 function myMIDIMessagehandler(iteratorInputs) {
-  
-  switch (iteratorInputs.data[0]) {
-    case 147: // side button press
-      buttonControls(iteratorInputs.data[1]);
-
-      break;
-    case 146: // button press
-      // refactor this, dont really want to put an if statement in a switch?
-      //console.log('button press');
-      buttonControls(iteratorInputs.data[1]);
-      
-      break;
-    case 130: // button release
-      //console.log('button release. note #' + iteratorInputs.data[1]);
-      break;
-    default:
-      
+  var midiInput = iteratorInputs.data[0];
+  if (midiInput == 147 || midiInput == 146) {
+    buttonControls(iteratorInputs.data[1]);
+  } else {
+    // tilt logic later. 
   }
 }
 
